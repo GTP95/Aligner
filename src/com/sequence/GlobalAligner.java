@@ -33,11 +33,11 @@ public class GlobalAligner implements Aligner{
         for(int row=0; row<secondSequence.length();row++){
             for(int column=0;column<firstSequence.length();column++){
                 if(row==0){
-                    matrix.addCell(new Cell(column*inDelPoints, null), row, column);
+                    matrix.addCell(new Cell(column*inDelPoints, null, row, column), row, column);
                     continue;
                 }
                 if(column==0){
-                    matrix.addCell(new Cell(row*inDelPoints, null), row, column);
+                    matrix.addCell(new Cell(row*inDelPoints, null, row, column), row, column);
                     continue;
                 }
                 matrix.addCell(scoreFunction(row, column), row, column);
@@ -52,35 +52,31 @@ public class GlobalAligner implements Aligner{
         throw new AlignmentNotCompletedException();
     }
 
- /*   @Override
-    public int getAlignmentScore() throws AlignmentNotCompletedException{
-        if(isAlignmentDone){    //searches the matrix for the maximum score
-            int alignmentScore=0;
-            for(int row=0; row<secondSequence.length(); row++){
-                for(int column=0; column<firstSequence.length(); column++){
-                    if(matrix.getCell(row, column).getValue()>alignmentScore) alignmentScore=matrix.getCell(row, column).getValue();
-                }
-            }
-            return alignmentScore;
+    @Override
+    public void traceback() throws AlignmentNotCompletedException{    //starts from the last cell and reconstructs the alignment
+        if(isAlignmentDone) {
+            String firstSequence;
+            String secondSequence;
         }
-        throw new AlignmentNotCompletedException();
-    } */
+    }
 
     private Cell scoreFunction(int row, int column){
         int sxValue=matrix.getCell(row-1, column).getValue()+inDelPoints;
         int upValue=matrix.getCell(row, column-1).getValue()+inDelPoints;
         int upSxValue=matrix.getCell(row-1, column-1).getValue()+sigma(row, column);
         if(sxValue>=upValue){
-            if(sxValue>=upSxValue) return new Cell(matrix.getCell(row-1, column).getValue()+inDelPoints, matrix.getCell(row-1, column));
-            return new Cell(matrix.getCell(row-1, column-1).getValue()+sigma(row, column), matrix.getCell(row-1, column-1));
+            if(sxValue>=upSxValue) return new Cell(matrix.getCell(row-1, column).getValue()+inDelPoints, matrix.getCell(row-1, column), row, column);
+            return new Cell(matrix.getCell(row-1, column-1).getValue()+sigma(row, column), matrix.getCell(row-1, column-1), row, column);
         }
-        if(upValue>=upSxValue) return new Cell(matrix.getCell(row, column-1).getValue()+inDelPoints, matrix.getCell(row, column-1));
-        return new Cell(matrix.getCell(row-1, column-1).getValue()+sigma(row, column), matrix.getCell(row-1, column-1));
+        if(upValue>=upSxValue) return new Cell(matrix.getCell(row, column-1).getValue()+inDelPoints, matrix.getCell(row, column-1), row, column);
+        return new Cell(matrix.getCell(row-1, column-1).getValue()+sigma(row, column), matrix.getCell(row-1, column-1), row, column);
     }
 
     private int sigma(int row, int column){
         if(firstSequence.charAt(column)==secondSequence.charAt(row)) return matchPoints;
         return substitutionPoints;
     }
+
+
 
 }
