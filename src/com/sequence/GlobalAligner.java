@@ -53,11 +53,39 @@ public class GlobalAligner implements Aligner{
     }
 
     @Override
-    public void traceback() throws AlignmentNotCompletedException{    //starts from the last cell and reconstructs the alignment
+    public void traceback() throws AlignmentNotCompletedException, WrongAlignmentException{    //starts from the last cell and reconstructs the alignment
         if(isAlignmentDone) {
-            String firstSequence;
-            String secondSequence;
+            String firstSequence=new String();
+            String secondSequence=new String();
+            Cell currentCell=matrix.getCell(this.secondSequence.length()-1, this.firstSequence.length()-1);
+            while(!(currentCell.getRow()==0 || currentCell.getColumn()==0)){
+
+                if(currentCell.getRow()==currentCell.getTracebackPointer().getRow()){   //the value of the cell has been calculated from the cell on it's left
+                    secondSequence=this.secondSequence.charAt(currentCell.getRow())+secondSequence;
+                    firstSequence="-".concat(firstSequence);    //residue aligned with a gap
+                }
+
+               else if(currentCell.getColumn()==currentCell.getTracebackPointer().getColumn()){ //the value of the cell has been calculated from the cell above
+                   firstSequence=this.firstSequence.charAt(currentCell.getColumn())+firstSequence;
+                   secondSequence="-".concat(secondSequence);   //residue aligned with a gap
+                }
+
+               else if(currentCell.getRow()-1==currentCell.getTracebackPointer().getRow() && currentCell.getColumn()-1==currentCell.getTracebackPointer().getColumn()){
+                   firstSequence=this.firstSequence.charAt(currentCell.getColumn())+firstSequence;
+                   secondSequence=this.secondSequence.charAt(currentCell.getRow())+secondSequence;  //two residues aligned together
+                }
+
+               else throw new WrongAlignmentException(currentCell, currentCell.getTracebackPointer());
+
+               currentCell=currentCell.getTracebackPointer();
+
+            }
+
+            System.out.println(firstSequence);
+            System.out.println(secondSequence);
         }
+
+       else throw new AlignmentNotCompletedException();
     }
 
     private Cell scoreFunction(int row, int column){

@@ -20,5 +20,22 @@ public class Cell {
     public Cell getTracebackPointer() {
         return tracebackPointer;
     }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    @Override
+    public String toString() {
+        return "Cell{" +
+                "value=" + value +
+                ", row=" + row +
+                ", column=" + column +
+                '}';
+    }
 }
 

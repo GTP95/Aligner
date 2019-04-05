@@ -26,10 +26,16 @@ public class Main {
         aligner.align();
         try {
             System.out.println("Alignment score: " + aligner.getAlignmentScore());
+            aligner.traceback();
         }
        catch (AlignmentNotCompletedException e){
             System.err.println("Alignment not yet finished");
        }
+        catch (WrongAlignmentException e){
+            System.err.println("Something went wrong while trying to align the two strings! Please report this error and the strings you where trying to align");
+            System.err.println("Additional debug infos:");
+            e.printInfo();
+        }
 
     }
 }
