@@ -89,14 +89,14 @@ public class GlobalAligner implements Aligner{
     }
 
     private Cell scoreFunction(int row, int column){
-        int sxValue=matrix.getCell(row-1, column).getValue()+inDelPoints;
-        int upValue=matrix.getCell(row, column-1).getValue()+inDelPoints;
+        int sxValue=matrix.getCell(row, column-1).getValue()+inDelPoints;
+        int upValue=matrix.getCell(row-1, column).getValue()+inDelPoints;
         int upSxValue=matrix.getCell(row-1, column-1).getValue()+sigma(row, column);
         if(sxValue>=upValue){
-            if(sxValue>=upSxValue) return new Cell(matrix.getCell(row-1, column).getValue()+inDelPoints, matrix.getCell(row-1, column), row, column);
+            if(sxValue>=upSxValue) return new Cell(matrix.getCell(row, column-1).getValue()+inDelPoints, matrix.getCell(row, column-1), row, column);
             return new Cell(matrix.getCell(row-1, column-1).getValue()+sigma(row, column), matrix.getCell(row-1, column-1), row, column);
         }
-        if(upValue>=upSxValue) return new Cell(matrix.getCell(row, column-1).getValue()+inDelPoints, matrix.getCell(row, column-1), row, column);
+        if(upValue>=upSxValue) return new Cell(matrix.getCell(row-1, column).getValue()+inDelPoints, matrix.getCell(row-1, column), row, column);
         return new Cell(matrix.getCell(row-1, column-1).getValue()+sigma(row, column), matrix.getCell(row-1, column-1), row, column);
     }
 
