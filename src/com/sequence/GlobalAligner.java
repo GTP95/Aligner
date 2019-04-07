@@ -26,6 +26,7 @@ public class GlobalAligner implements Aligner{
         this.substitutionPoints = substitutionPoints;
         this.inDelPoints = inDelPoints;
         this.isAlignmentDone=false;
+        this.matrix=Matrix.getInstance();
     }
 
     public void align(){
@@ -61,13 +62,13 @@ public class GlobalAligner implements Aligner{
             while(!(currentCell.getRow()==0 || currentCell.getColumn()==0)){
 
                 if(currentCell.getRow()==currentCell.getTracebackPointer().getRow()){   //the value of the cell has been calculated from the cell on it's left
-                    secondSequence=this.secondSequence.charAt(currentCell.getRow())+secondSequence;
-                    firstSequence="-".concat(firstSequence);    //residue aligned with a gap
+                    firstSequence=this.firstSequence.charAt(currentCell.getColumn())+firstSequence;
+                    secondSequence="-".concat(secondSequence);    //residue aligned with a gap
                 }
 
                else if(currentCell.getColumn()==currentCell.getTracebackPointer().getColumn()){ //the value of the cell has been calculated from the cell above
-                   firstSequence=this.firstSequence.charAt(currentCell.getColumn())+firstSequence;
-                   secondSequence="-".concat(secondSequence);   //residue aligned with a gap
+                   secondSequence=this.secondSequence.charAt(currentCell.getRow())+secondSequence;  //in case of bug try to switch getRow() with getColumn()
+                   firstSequence="-".concat(firstSequence);   //residue aligned with a gap
                 }
 
                else if(currentCell.getRow()-1==currentCell.getTracebackPointer().getRow() && currentCell.getColumn()-1==currentCell.getTracebackPointer().getColumn()){
