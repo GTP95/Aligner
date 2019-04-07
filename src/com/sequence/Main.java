@@ -7,14 +7,6 @@ public class Main {
     private static String sequence1;
     private static String sequence2;
 
-    private static int max(int x, int y, int z){
-        if(x>=y){
-            if(x>=z) return x;
-            return z;
-        }
-        return y;
-    }
-
     public static void main(String[] args) {
         Scanner scanner=new Scanner(System.in);
 	    System.out.println("Enter first sequence");
@@ -22,7 +14,7 @@ public class Main {
         System.out.println("Enter second sequence");
         sequence2=scanner.next();
 
-        Aligner aligner=new GlobalAligner(sequence1, sequence2);
+        Aligner aligner=new GlobalAligner(sequence1, sequence2,1,-1,-2);
         aligner.align();
         try {
             System.out.println("Alignment score: " + aligner.getAlignmentScore());
