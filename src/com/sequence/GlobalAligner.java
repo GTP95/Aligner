@@ -30,7 +30,6 @@ public class GlobalAligner implements Aligner{
     }
 
     public void align(){
-       // matrix.addCell(new Cell(0, null), 0, 0);    //initializes first cell of the matrix
         for(int row=0; row<secondSequence.length();row++){
             for(int column=0;column<firstSequence.length();column++){
                 if(row==0){
@@ -58,7 +57,7 @@ public class GlobalAligner implements Aligner{
         if(isAlignmentDone) {
             String firstSequence=new String();
             String secondSequence=new String();
-            Cell currentCell=matrix.getCell(this.secondSequence.length()-1, this.firstSequence.length()-1);
+            Cell currentCell=matrix.getCell(this.secondSequence.length()-1, this.firstSequence.length()-1); //Starts from the last cell in the matrix to reconstruct the alignment
             while(!(currentCell.getRow()==0 || currentCell.getColumn()==0)){
 
                 if(currentCell.getRow()==currentCell.getTracebackPointer().getRow()){   //the value of the cell has been calculated from the cell on it's left
@@ -89,7 +88,7 @@ public class GlobalAligner implements Aligner{
        else throw new AlignmentNotCompletedException();
     }
 
-    private Cell scoreFunction(int row, int column){
+    private Cell scoreFunction(int row, int column){    //written to give precedence to match when multiple alignment choices give the same score
         int sxValue=matrix.getCell(row, column-1).getValue()+inDelPoints;
         int upValue=matrix.getCell(row-1, column).getValue()+inDelPoints;
         int upSxValue=matrix.getCell(row-1, column-1).getValue()+sigma(row, column);
