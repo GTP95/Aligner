@@ -14,7 +14,7 @@ public class Main {
         System.out.println("Enter second sequence");
         sequence2=scanner.next();
 
-        Aligner aligner=new LocalAligner(sequence1, sequence2);
+        Aligner aligner=new LocalAligner(sequence1, sequence2, 2, -1, -1);
         aligner.align();
         try {
             System.out.println("Alignment score: " + aligner.getAlignmentScore());

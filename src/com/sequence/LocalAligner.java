@@ -10,8 +10,8 @@ public class LocalAligner implements Aligner {
     boolean isAlignmentDone;
 
     public LocalAligner(String firstSequence, String secondSequence) {
-        this.firstSequence = firstSequence;
-        this.secondSequence = secondSequence;
+        this.firstSequence = "-".concat(firstSequence);
+        this.secondSequence = "-".concat(secondSequence);
         this.matchPoints=1;
         this.inDelPoints=0;
         this.substitutionPoints=0;
@@ -20,8 +20,8 @@ public class LocalAligner implements Aligner {
     }
 
     public LocalAligner(String firstSequence, String secondSequence, int matchPoints, int substitutionPoints, int inDelPoints) {
-        this.firstSequence = firstSequence;
-        this.secondSequence = secondSequence;
+        this.firstSequence = "-".concat(firstSequence);
+        this.secondSequence = "-".concat(secondSequence);
         this.matchPoints = matchPoints;
         this.substitutionPoints = substitutionPoints;
         this.inDelPoints = inDelPoints;
@@ -35,7 +35,7 @@ public class LocalAligner implements Aligner {
             String firstSequence=new String();
             String secondSequence=new String();
             Cell currentCell=matrix.getMaxCell();
-            while(!(currentCell.getRow()==0 || currentCell.getColumn()==0)){
+            while(currentCell.getValue()!=0){
 
                 if(currentCell.getRow()==currentCell.getTracebackPointer().getRow()){   //the value of the cell has been calculated from the cell on it's left
                     firstSequence=this.firstSequence.charAt(currentCell.getColumn())+firstSequence;
@@ -58,10 +58,6 @@ public class LocalAligner implements Aligner {
 
             }
 
-            if(this.firstSequence.charAt(currentCell.getColumn())==this.secondSequence.charAt(currentCell.getRow())) {  //sometimes my implementation misses a matching character at the beginning of the alignmet. This is a workaround until I Find the error
-            firstSequence=this.firstSequence.charAt(currentCell.getColumn())+firstSequence; //NOTE: aligment score may be off by one
-            secondSequence=this.secondSequence.charAt(currentCell.getRow())+secondSequence;
-            }
             System.out.println(firstSequence);
             System.out.println(secondSequence);
         }
