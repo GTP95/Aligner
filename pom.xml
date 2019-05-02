@@ -8,7 +8,7 @@
   <name>Aligner</name>
   <url>http://maven.apache.org</url>
   <properties>
-  <maven.compiler.source>12</maven.compiler.source>
+  <maven.compiler.source>11</maven.compiler.source>
   </properties>
   <build>
   <plugins>
@@ -16,7 +16,7 @@
   <artifactId>maven-compiler-plugin</artifactId>
   <version>3.8.0</version>
   <configuration>
-    <release>10</release> <!-- If changed to 12 says it's not supported, will try to change this in the future -->
+    <release>11</release>
   </configuration>
   </plugin>
   </plugins>
